@@ -1,0 +1,29 @@
+services:
+  nginx:
+    build: nginx
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+      # - 443:443
+    depends_on:
+      - vue
+    networks:
+      - app-network
+  fastapi:
+    build: api
+    container_name: fastapi
+    restart: "no"
+    networks:
+      - app-network
+  vue:
+    build: client
+    container_name: vue
+    environment: 
+      PORT: 3000
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
